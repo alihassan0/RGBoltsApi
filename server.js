@@ -3,7 +3,21 @@
 var express = require('express');
 var fs      = require('fs');
 
+var app = express();
+var fileName = __dirname + "/" + "users.json";
 
+app.get('/listUsers', function (req, res) {
+   fs.readFile( fileName, 'utf8', function (err, data) {
+       parsedData = JSON.parse(data);
+        var keys = [], name;
+            for (name in parsedData) {
+                if (parsedData.hasOwnProperty(name)) {
+                    keys.push(name);
+                }
+            }
+       res.end( keys.toString() );
+   });
+})
 /**
  *  Define the sample application.
  */
