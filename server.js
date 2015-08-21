@@ -2,22 +2,8 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
-
-var app = express();
 var fileName = __dirname + "/" + "users.json";
 
-app.get('/listUsers', function (req, res) {
-   fs.readFile( fileName, 'utf8', function (err, data) {
-       parsedData = JSON.parse(data);
-        var keys = [], name;
-            for (name in parsedData) {
-                if (parsedData.hasOwnProperty(name)) {
-                    keys.push(name);
-                }
-            }
-       res.end( keys.toString() );
-   });
-})
 /**
  *  Define the sample application.
  */
@@ -127,7 +113,7 @@ var SampleApp = function() {
      */
     self.initializeServer = function() {
         self.createRoutes();
-        self.app = express.createServer();
+        self.app = express();;
 
         //  Add handlers for the app (from the routes).
         for (var r in self.routes) {
@@ -159,7 +145,21 @@ var SampleApp = function() {
                         Date(Date.now() ), self.ipaddress, self.port);
         });
     };
-
+    self.rest = function() {
+        self.app.get('/listUsers', function (req, res) {
+                fs.readFile( fileName, 'utf8', function (err, data) {
+                parsedData = JSON.parse(data);
+                var keys = [], name;
+                    for (name in parsedData) {
+                        if (parsedData.hasOwnProperty(name)) {
+                            keys.push(name);
+                        }
+                    }
+                res.end( keys.toString() );
+            });
+        });
+    };
+    
 };   /*  Sample Application.  */
 
 
@@ -170,4 +170,5 @@ var SampleApp = function() {
 var zapp = new SampleApp();
 zapp.initialize();
 zapp.start();
+zapp.rest();
 
