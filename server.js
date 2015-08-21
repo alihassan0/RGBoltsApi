@@ -146,18 +146,72 @@ var SampleApp = function() {
         });
     };
     self.rest = function() {
-        self.app.get('/listUsers', function (req, res) {
+        self.app.get('/listLevels', function (req, res) {
                 fs.readFile( fileName, 'utf8', function (err, data) {
                 parsedData = JSON.parse(data);
-                var keys = [], name;
+                var keys = ["------------levels----------"], name;
                     for (name in parsedData) {
                         if (parsedData.hasOwnProperty(name)) {
-                            keys.push(name);
+                            keys.push("\n" + name + "  nob  " + parsedData[name].nob + "  ***  noc  " +parsedData[name].noc);
                         }
                     }
                 res.end( keys.toString() );
             });
         });
+        self.app.get('/addLevel', function (req, res) {
+            fs.readFile(fileName, 'utf8', function (err, data) {
+               data = JSON.parse( data );
+               var levelName = "level"+req.query.id;
+               var nob = req.query.nob;//number of Blocks 
+               var noc = req.query.noc;//number of cycles 
+                if(!data[levelName]){
+                {
+                    console.log("the level is not there .. will create it now");
+                    data[levelName] = {};
+                    data[levelName].noc = [noc];
+                    data[levelName].nob = [nob];
+                    console.log("you are the first to solve this level");
+                }
+                }
+                else
+                {
+                    console.log("the level is already there")
+                    if(data[levelName].nob[0] >= nob)
+                    {
+                        console.log("you beat the minimum number of nob which was " + data[levelName].nob);
+                        data[levelName].nob.push(nob);
+                        data[levelName].nob.sort();
+                    }
+                    else
+                    {
+                        console.log("you didn't beat the minimum number of nob which was " + data[levelName].nob);
+                        data[levelName].nob.push(nob);
+                        data[levelName].nob.sort();
+                    }
+                    if(data[levelName].noc[0] >= noc)
+                    {
+                        console.log("you beat the minimum number of noc which was " + data[levelName].noc);
+                        data[levelName].noc.push(noc);
+                        data[levelName].noc.sort();
+                    }
+                    else
+                    {
+                        console.log("you didn't beat the minimum number of noc which was " + data[levelName].noc);
+                        data[levelName].noc.push(noc);
+                        data[levelName].noc.sort();
+                    }
+                }
+
+               data = JSON.stringify(data);
+               fs.writeFile(fileName, data, function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log("The file was saved!");
+                }); 
+               res.end();
+           });
+        })
     };
     
 };   /*  Sample Application.  */
