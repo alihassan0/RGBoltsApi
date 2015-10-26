@@ -158,15 +158,7 @@ var SampleApp = function() {
 
     self.app.get('/listLevels', function(req, res) {
       fs.readFile(fileName, 'utf8', function(err, data) {
-        parsedData = JSON.parse(data);
-        var keys = ["------------levels----------"],
-          name;
-        for (name in parsedData) {
-          if (parsedData.hasOwnProperty(name)) {
-            keys.push("\n" + name + "  nob  " + parsedData[name].nob + "  ***  noc  " + parsedData[name].noc);
-          }
-        }
-        res.end(keys.toString());
+        res.end(data);
       });
     });
 
