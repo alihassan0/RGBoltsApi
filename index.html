@@ -1,32 +1,39 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Welcome to OpenShift</title>
 </head>
 <script type="text/javascript">
-	function showLevels()
-	{
-		window.location.href = "http://127.0.0.1:8080/listLevels";
-	}
-	function httpGetAsync(theUrl, callback)
-	{
-	    var xmlHttp = new XMLHttpRequest();
-	    xmlHttp.onreadystatechange = function() {
-	        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-	            callback(xmlHttp.responseText);
-	    }
-	    xmlHttp.open("GET", theUrl, true); // true for asynchronous
-	    xmlHttp.send(null);
-	}
+  function showLevels() {
+    window.location.href = "http://127.0.0.1:8080/listLevels";
+  }
+
+  function httpGetAsync(theUrl, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+  }
 </script>
+
 <body>
-welcome to my test site<br>
-you can insert levels here
-level: <br>
-<input type="text" name="levelName"><input type="button" value="submit">
-<hr>
-<input type="button" value="show levels" onclick="showLevels()">
+  <p>welcome to my test site</p>
+  <br> you can insert levels here level:
+  <br>
+  <form action="" method="post">
+    <input type="text" placeholder="level" name="levelName">
+    <input type="text" placeholder="Number of Blocks" name="nob">
+    <input type="text" placeholder="Number of clock count" name="noc">
+    <input type="button" value="submit">
+  </form>
+  <hr>
+  <input type="button" value="show levels" onclick="showLevels()">
 </body>
+
 </html>

@@ -3,6 +3,14 @@
 var express = require('express');
 var fs = require('fs');
 var fileName = __dirname + "/" + "users.json";
+var bodyParser = require("body-parser");
+// create application/json parser
+var jsonParser = bodyParser.json()
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+})
 
 /**
  *  Define the sample application.
@@ -162,12 +170,14 @@ var SampleApp = function() {
       });
     });
 
-    self.app.get('/addLevel', function(req, res) {
+    self.app.post('/addLevel', urlencodedParser, function(req, res) {
+      var body = req.body;
+
       fs.readFile(fileName, 'utf8', function(err, data) {
         data = JSON.parse(data);
-        var levelName = "level" + req.query.id;
-        var nob = req.query.nob; //number of Blocks
-        var noc = req.query.noc; //number of cycles
+        var levelName = "level" + body.levelName;
+        var nob = body.nob; //number of Blocks
+        var noc = body.noc; //number of cycles
         if (!data[levelName]) {
           {
             console.log("the level is not there .. will create it now");
