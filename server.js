@@ -1,9 +1,14 @@
 #!/bin/env node
- //  OpenShift sample Node application
+
 var express = require('express');
 var fs = require('fs');
-var fileName = __dirname + "/" + "users.json";
 var bodyParser = require("body-parser");
+var mongoose = require('mongoose');
+var Users = require('./models/Users');
+
+// Connecting to mongodb
+mongoose.connect('mongodb://localhost/test_db');
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 
@@ -11,6 +16,8 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({
   extended: false
 })
+
+var fileName = __dirname + "/" + "users.json";
 
 /**
  *  Define the sample application.
@@ -164,9 +171,12 @@ var SampleApp = function() {
 
   self.rest = function() {
 
-    self.app.get('/listLevels', function(req, res) {
-      fs.readFile(fileName, 'utf8', function(err, data) {
-        res.end(data);
+    self.app.get('/users', function(req, res) {
+      Users.find(function(err, users) {
+        if (err) {
+          console.log(err);
+        }
+        res.json(users);
       });
     });
 

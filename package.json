@@ -23,11 +23,14 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
+    "bluebird": "^3.0.2",
     "body-parser": "^1.14.1",
     "express": "^3.4.8",
     "mongoose": "^4.2.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "inquirer": "^0.11.0"
+  },
   "bundleDependencies": [],
   "private": true,
   "scripts": {
