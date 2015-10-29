@@ -12,10 +12,6 @@ mongoose.connect('mongodb://localhost/test_db');
 // create application/json parser
 var jsonParser = bodyParser.json()
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({
-  extended: false
-})
 
 var fileName = __dirname + "/" + "users.json";
 
@@ -174,59 +170,34 @@ var SampleApp = function() {
     self.app.get('/users', function(req, res) {
       Users.find(function(err, users) {
         if (err) {
-          console.log(err);
+          throw err;
         }
+        res.status(200);
         res.json(users);
       });
     });
 
-    self.app.post('/addLevel', urlencodedParser, function(req, res) {
-      var body = req.body;
-
-      fs.readFile(fileName, 'utf8', function(err, data) {
-        data = JSON.parse(data);
-        var levelName = "level" + body.levelName;
-        var nob = body.nob; //number of Blocks
-        var noc = body.noc; //number of cycles
-        if (!data[levelName]) {
-          {
-            console.log("the level is not there .. will create it now");
-            data[levelName] = {};
-            data[levelName].noc = [noc];
-            data[levelName].nob = [nob];
-            console.log("you are the first to solve this level");
-          }
-        } else {
-          console.log("the level is already there")
-          if (data[levelName].nob[0] >= nob) {
-            console.log("you beat the minimum number of nob which was " + data[levelName].nob);
-            data[levelName].nob.push(nob);
-            data[levelName].nob.sort();
-          } else {
-            console.log("you didn't beat the minimum number of nob which was " + data[levelName].nob);
-            data[levelName].nob.push(nob);
-            data[levelName].nob.sort();
-          }
-          if (data[levelName].noc[0] >= noc) {
-            console.log("you beat the minimum number of noc which was " + data[levelName].noc);
-            data[levelName].noc.push(noc);
-            data[levelName].noc.sort();
-          } else {
-            console.log("you didn't beat the minimum number of noc which was " + data[levelName].noc);
-            data[levelName].noc.push(noc);
-            data[levelName].noc.sort();
-          }
+    self.app.get('/users/:id', function(req, res) {
+      Users.findById(req.params.id, function(err, user) {
+        if (err) {
+          throw err;
         }
-
-        data = JSON.stringify(data);
-        fs.writeFile(fileName, data, function(err) {
-          if (err) {
-            return console.log(err);
-          }
-          console.log("The file was saved!");
-        });
-        res.end();
+        res.status(201);
+        res.json(user);
       });
+    });
+
+    self.app.post('/users', jsonParser, function(req, res) {
+      var userData = req.body;
+
+      Users.create(userData, function(err, user) {
+        if (err) {
+          throw err;
+        }
+        res.status(201); // sending 201 and the created user
+        res.json(user);
+      });
+
     });
   };
 
