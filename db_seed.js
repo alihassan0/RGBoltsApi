@@ -22,7 +22,6 @@ clearDatabase = function() {
 seed = function() {
   console.log('Database seed started ...');
   Users.create({
-    _id: '1',
     levels: [{
       levelName: 'level_01',
       numberOfBlocks: 10,
@@ -31,7 +30,6 @@ seed = function() {
   });
 
   Users.create({
-    _id: '2',
     levels: [{
       levelName: 'level_01',
       numberOfBlocks: 10,
@@ -44,7 +42,6 @@ seed = function() {
   });
 
   Users.create({
-    _id: '3',
     levels: [{
       levelName: 'level_03',
       numberOfBlocks: 30,
@@ -53,7 +50,6 @@ seed = function() {
   });
 
   Users.create({
-    _id: '4',
     levels: [{
       levelName: 'level_01',
       numberOfBlocks: 10,

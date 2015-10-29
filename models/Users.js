@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  _id: String, // Overriding the id with our locally generated id
   levels: [{
     levelName: String,
     numberOfBlocks: Number,
